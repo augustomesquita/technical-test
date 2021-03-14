@@ -117,10 +117,7 @@ Successfully tagged docker.mycompany.com/technical-test:latest
 ```
 Finally, run the container:
 ```
-docker run -d -p 9000:8080 --name=technical-test-api \
-  --network=technical-test-network \
-  -e MYSQL_ADDR=technical-test-db \
-  docker.lazydev.com/technical-test:latest
+docker run -d -p 9000:8080 --name=technical-test-api --network=technical-test-network -e MYSQL_ADDR=technical-test-db docker.lazydev.com/technical-test:latest
 ```
 After some seconds, try to query the users using curl command on the container's port 9000: 
 ```
