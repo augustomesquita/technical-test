@@ -11,3 +11,10 @@ spring:
     password: secret
 server:
   port: 8081
+application:
+  stockmanager:
+    host: ${STOCK_MANAGER_HOST:localhost}
+    port: ${STOCK_MANAGER_PORT:8080}
+  stockquotemanager:
+    host: ${STOCK_QUOTE_MANAGER_HOST:localhost}
+    port: ${STOCK_QUOTE_MANAGER_PORT:8081}

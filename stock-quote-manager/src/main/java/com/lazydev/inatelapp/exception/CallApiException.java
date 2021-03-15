@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Slf4j
-@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+@ResponseStatus(value = HttpStatus.BAD_GATEWAY)
 public class CallApiException extends RuntimeException {
 
     public CallApiException() {

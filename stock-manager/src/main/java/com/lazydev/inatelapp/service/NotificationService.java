@@ -1,12 +1,10 @@
 package com.lazydev.inatelapp.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lazydev.inatelapp.model.ClientAddress;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;

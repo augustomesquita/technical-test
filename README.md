@@ -77,7 +77,7 @@ docker run -d -p 8080:8080 --name=stock-manager-api --network=technical-test-net
 ```
 Repeat the same process inside the stock-quote-manager-api (mvn clean package commands), but replace the container running command for this following one:
 ```
-docker run -d -p 8081:8081 --name=stock-quote-manager-api --network=technical-test-network -e MYSQL_ADDR=stock-quote-manager-db docker.lazydev.com/stock-quote-manager:latest
+docker run -d -p 8081:8081 --name=stock-quote-manager-api --network=technical-test-network -e MYSQL_ADDR='stock-quote-manager-db' -e STOCK_MANAGER_HOST='stock-manager-api' -e STOCK_MANAGER_PORT='8080' -e STOCK_QUOTE_MANAGER_HOST='stock-quote-manager-api' -e STOCK_QUOTE_MANAGER_PORT='8081' docker.lazydev.com/stock-quote-manager:latest
 ```
 Note*: It is to follow the ordering. It means that stock-quote-manager-api must be the last container to be upped.
 

@@ -6,13 +6,13 @@ import com.lazydev.inatelapp.dto.StockQuoteRequest;
 import com.lazydev.inatelapp.exception.CallApiException;
 import com.lazydev.inatelapp.exception.InvalidCurrencyException;
 import com.lazydev.inatelapp.exception.InvalidDateException;
-import com.lazydev.inatelapp.exception.InvalidIdException;
 import com.lazydev.inatelapp.exception.NotFoundException;
 import com.lazydev.inatelapp.model.Quote;
 import com.lazydev.inatelapp.model.StockQuote;
 import com.lazydev.inatelapp.repository.StockQuoteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -34,6 +34,12 @@ public class StockQuoteService {
 
     @Autowired
     private StockCacheService stockCacheService;
+
+    @Value("${application.stockmanager.host}")
+    private String host;
+
+    @Value("${application.stockmanager.port}")
+    private Integer port = 8081;
 
     public List<StockQuote> getStocks() {
         return stockQuoteRepository.findAll();
@@ -61,7 +67,7 @@ public class StockQuoteService {
         if (availableStocks.isEmpty()) {
             try {
                 log.info("Stock Cache is empty. Retrieving registers from Stock Manager API...");
-                URL url = new URL("http://localhost:8080/api/stock");
+                URL url = new URL(String.format("http://%s:%d/api/stock", host, port));
                 HttpURLConnection connection = null;
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestProperty("Accept", "application/json");
@@ -69,7 +75,7 @@ public class StockQuoteService {
                 ObjectMapper mapper = new ObjectMapper();
                 Set<String> stocks = mapper.readValue(responseStream, new TypeReference<Set<String>>(){});
                 if (!stocks.contains(id)) {
-                    throw new InvalidIdException();
+                    throw new NotFoundException(id);
                 }
                 log.info("Stock with id [{}] is available ", id);
                 stockCacheService.addAll(stocks);
@@ -79,7 +85,7 @@ public class StockQuoteService {
         } else {
             log.info("Verifying stocks available through the Stock Cache...");
             if (!availableStocks.contains(id)) {
-                throw new InvalidIdException();
+                throw new NotFoundException(id);
             }
             log.info("Stock with id [{}] is available ", id);
         }

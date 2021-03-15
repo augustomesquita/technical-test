@@ -3,7 +3,7 @@ package com.lazydev.inatelapp;
 import com.lazydev.inatelapp.dto.StockQuoteRequest;
 import com.lazydev.inatelapp.exception.InvalidCurrencyException;
 import com.lazydev.inatelapp.exception.InvalidDateException;
-import com.lazydev.inatelapp.exception.InvalidIdException;
+import com.lazydev.inatelapp.exception.NotFoundException;
 import com.lazydev.inatelapp.model.Quote;
 import com.lazydev.inatelapp.model.StockQuote;
 import com.lazydev.inatelapp.repository.StockQuoteRepository;
@@ -81,7 +81,7 @@ public class SpringApplicationTests {
         when(stockCacheService.getAvailableStocks()).thenReturn(availableStocks);
 
         // Then
-        assertThrows(InvalidIdException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             stockQuoteService.saveStock(stockQuoteRequest);
         });
     }

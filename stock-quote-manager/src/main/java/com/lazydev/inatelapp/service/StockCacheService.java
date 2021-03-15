@@ -2,7 +2,6 @@ package com.lazydev.inatelapp.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
