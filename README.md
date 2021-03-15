@@ -30,7 +30,7 @@ $ docker network create technical-test-network
 ```
 Now we can start the MySQL 8 container:
 ```
-docker run -d -p 3306:3306 --name=technical-test-db --network=technical-test-network --env="MYSQL_USER=spring-user" --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_PASSWORD=secret" --env="MYSQL_DATABASE=test" mysql:8.0
+docker run -d -p 3306:3306 --name=technical-test-db --network=technical-test-network --env="MYSQL_USER=spring-user" --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_PASSWORD=secret" --env="MYSQL_DATABASE=bootdb" mysql:8.0
 ```
 *It will take some seconds.*
 
@@ -79,7 +79,7 @@ We can use this UI to run POST, PUT, GET and DELETE calls.
 
 Let's add a new user. Open the **POST** section and click on **"Try it out"** button.
 
-The below window will appear. Fill with the JSON information want  for your new user and click **"Execute"** button in the bottom.
+The below window will appear. Fill with the JSON information wanted for your new user and click **"Execute"** button in the bottom.
 
 ![alt text](https://github.com/Augustomesquita/technical-test/blob/master/figures/figure1.png)
 
