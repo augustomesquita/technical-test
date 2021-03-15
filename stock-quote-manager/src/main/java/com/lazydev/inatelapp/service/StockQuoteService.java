@@ -11,6 +11,7 @@ import com.lazydev.inatelapp.exception.NotFoundException;
 import com.lazydev.inatelapp.model.Quote;
 import com.lazydev.inatelapp.model.StockQuote;
 import com.lazydev.inatelapp.repository.StockQuoteRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +21,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class StockQuoteService {
 
     @Autowired
     private StockQuoteRepository stockQuoteRepository;
+
+    @Autowired
+    private StockCacheService stockCacheService;
 
     public List<StockQuote> getStocks() {
         return stockQuoteRepository.findAll();
@@ -51,20 +57,33 @@ public class StockQuoteService {
     }
 
     private void validateStock(String id)  {
-        try {
-            URL url = new URL("http://localhost:8080/api/stock");
-            HttpURLConnection connection = null;
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Accept", "application/json");
-            InputStream responseStream = connection.getInputStream();
-            ObjectMapper mapper = new ObjectMapper();
-            List<String> stocks = mapper.readValue(responseStream, new TypeReference<List<String>>(){});
-            if (!stocks.contains(id)) {
+        Set<String> availableStocks = stockCacheService.getAvailableStocks();
+        if (availableStocks.isEmpty()) {
+            try {
+                log.info("Stock Cache is empty. Retrieving registers from Stock Manager API...");
+                URL url = new URL("http://localhost:8080/api/stock");
+                HttpURLConnection connection = null;
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestProperty("Accept", "application/json");
+                InputStream responseStream = connection.getInputStream();
+                ObjectMapper mapper = new ObjectMapper();
+                Set<String> stocks = mapper.readValue(responseStream, new TypeReference<Set<String>>(){});
+                if (!stocks.contains(id)) {
+                    throw new InvalidIdException();
+                }
+                log.info("Stock with id [{}] is available ", id);
+                stockCacheService.addAll(stocks);
+            } catch (IOException e) {
+                throw new CallApiException();
+            }
+        } else {
+            log.info("Verifying stocks available through the Stock Cache...");
+            if (!availableStocks.contains(id)) {
                 throw new InvalidIdException();
             }
-        } catch (IOException e) {
-            throw new CallApiException();
+            log.info("Stock with id [{}] is available ", id);
         }
+
     }
 
     private void validateQuotes(Map<String, String> quotes) {
