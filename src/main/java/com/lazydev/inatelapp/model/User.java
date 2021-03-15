@@ -1,5 +1,8 @@
 package com.lazydev.inatelapp.model;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +13,8 @@ import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class User {
 
@@ -19,8 +24,4 @@ public class User {
     private String name;
     private String email;
 
-    public User (String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
 }
