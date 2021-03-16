@@ -33,12 +33,14 @@ public class NotificationService {
     public void notifyClients() {
         getClientAddresses().forEach(clientAddress -> {
             try {
+                log.info("Sending cache deletion request for clients");
                 URL url = new URL(String.format("http://%s:%d/api/stockcache", clientAddress.getHost(), clientAddress.getPort()));
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("DELETE");
                 connection.setRequestProperty("Content-Type", "application/json; utf-8");
                 connection.setRequestProperty("Accept", "application/json");
                 connection.getInputStream();
+                log.info("Request were sent clients successfully.");
             } catch (IOException e) {
                 log.warn(e.getMessage(), e);
             }

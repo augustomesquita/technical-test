@@ -44,7 +44,6 @@ public class StockController {
     public Stock saveStock(@Valid @RequestBody StockRequest stockRequest) {
         log.info("Creating stock...");
         Stock stockCreated = stockService.saveStock(stockRequest);
-        notificationService.notifyClients();
         log.info("Stock quote with id [{}] was created successfully.", stockCreated.getId());
         return stockCreated;
     }
