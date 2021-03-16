@@ -9,13 +9,28 @@ This project was developed using SpringBoot [Spring Initializr](start.spring.io)
 
 The following sections details each step to get the project up and running.
 
+
+## 0. Requirements
+* MVN Cli (<https://maven.apache.org/download.cgi>)
+* Docker (<https://www.docker.com/products/docker-desktop>)
+* Java (<https://www.java.com/en/download>)
+
 ## 1. Clone the project and build it
 Run the command below in your terminal to clone the project:
 ```
 $ git clone https://github.com/Augustomesquita/technical-test.git
 ```
 
-## 2. Start MySQL locally in a Docker container
+## 2. Build and test easily using the bash script
+Run the deploy.sh inside in the root project:
+```
+$ sh deploy.sh
+```
+Now sit back, relax and drink your coffee while all the applications are started.
+After the applications starting you already can call the api's using your internet browser to the link at <http://localhost:8080/swagger-ui/index.html> and <http://localhost:8081/swagger-ui/index.html>.
+
+## 3. The manual and hard way
+### 3.1 Start MySQL locally in a Docker container
 
 Let's first create a Docker network. It will be useful in section 4. 
 ```
@@ -43,7 +58,7 @@ $ docker exec -it stock-quote-manager-db mysql -uspring-user -psecret
 ```
 You will be connected to MySQL. Type `exit` to exit.
 
-## 3. Run the REST API application in a container
+### 3.2 Run the REST API application in a container
 Let's now deploy our SpingBoot application as a Docker image and run it as a container.
 
 First step is to check if your docker is with the option "Expose daemon on tcp://localhost:2375 without TLS" enabled. To check this do the following steps:
@@ -81,11 +96,10 @@ docker run -d -p 8081:8081 --name=stock-quote-manager-api --network=technical-te
 ```
 Note*: It is to follow the ordering. It means that stock-quote-manager-api must be the last container to be upped.
 
-### 4. Swagger
+## 4. Swagger
 We can use Swagger to easily interact with the REST API.
 
 Access using your internet browser the link at <http://localhost:8080/swagger-ui/index.html> and <http://localhost:8081/swagger-ui/index.html>.
-
 We can use this UI to run the operation calls of the projects.
 
 ## 5. Cleannig up
