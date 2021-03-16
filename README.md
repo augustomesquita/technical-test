@@ -15,6 +15,12 @@ The following sections details each step to get the project up and running.
 * Docker (<https://www.docker.com/products/docker-desktop>)
 * Java (<https://www.java.com/en/download>)
 
+After docker desktop installation you need to enable the option "Expose daemon on tcp://localhost:2375 without TLS" as the following steps:
+1) Run Docker, go to Settings -> General
+2) Click on "Expose daemon on tcp://localhost:2375 without TLS"
+3) Restart Docker
+
+
 ## 1. Clone the project and build it
 Run the command below in your terminal to clone the project:
 ```
@@ -60,13 +66,7 @@ You will be connected to MySQL. Type `exit` to exit.
 
 ### 3.2 Run the REST API application in a container
 Let's now deploy our SpingBoot application as a Docker image and run it as a container.
-
-First step is to check if your docker is with the option "Expose daemon on tcp://localhost:2375 without TLS" enabled. To check this do the following steps:
-1) Run Docker, go to Settings -> General
-2) Click on "Expose daemon on tcp://localhost:2375 without TLS"
-3) Restart
-
-After this, inside stock-manager folder, run the command below which will create the application image:
+Inside stock-manager folder, run the command below which will create the application image:
 ```
 $ mvn clean package -DskipTests
 $ mvn clean package docker:build -DskipTests
